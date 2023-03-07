@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
+import DataTable from "./components/Table";
+import Home from "./pages/Home";
+import { useDataStore } from "./zustandStores/useDataStore";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [state, setState] = useState();
+  const dataFromAPI = useDataStore((state) => state.data);
+  const isLoading = useDataStore((state) => state.isLoading);
+  const getData = useDataStore((state) => state.getDataFromAPI);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  return <>{isLoading ? <h1>LOADING...</h1> : <Home />}</>;
 }
 
 export default App;
